@@ -77,3 +77,17 @@ class Dijkstra {
         scanner.close();
     }
 }
+
+
+Here's a step-by-step algorithm for Dijkstra's algorithm:
+
+1. Initialize the distance array to store the shortest distance from the source vertex to all other vertices. Set the distance of the source vertex to 0 and all other distances to infinity.
+2. Initialize a boolean array to keep track of vertices included in the shortest path tree (SPT). Set all values to false initially.
+3. Repeat the following steps for V-1 times, where V is the number of vertices in the graph:
+   a. Find the vertex with the minimum distance from the source vertex that is not yet included in the SPT. Let this vertex be u.
+   b. Mark vertex u as visited by setting the corresponding value in the boolean array to true.
+   c. Update the distance array for all adjacent vertices of u if the current distance plus the weight of the edge between u and the adjacent vertex is less than the previously recorded distance for the adjacent vertex.
+4. After the loop, the distance array contains the shortest distances from the source vertex to all other vertices.
+5. Print the distances from the source vertex to all other vertices.
+
+This algorithm efficiently finds the shortest paths in a weighted graph from a given source vertex to all other vertices.
