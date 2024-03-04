@@ -92,3 +92,20 @@ class crc_gen {
     }
 
 }
+
+
+
+This Java program implements the CRC (Cyclic Redundancy Check) generation and verification algorithm. Here's a breakdown of how it works:
+
+1. It defines a class `crc_gen` with a main method.
+2. The main method takes input from the user for the number of data bits and the data bits themselves.
+3. It also takes input for the number of bits in the divisor and the divisor bits.
+4. It appends 0's to the data to match the length of the divisor.
+5. It performs the division operation to generate the CRC code.
+6. It prints the generated CRC code.
+7. It takes input from the user for the received CRC code.
+8. It performs the division operation on the received CRC code.
+9. It checks if the remainder obtained after division is all zeros, indicating no error, or if there's a non-zero remainder, indicating an error.
+10. It prints the result - whether there's an error or not.
+
+This program demonstrates how CRC codes can be generated and verified to detect errors in data transmission. If you have any questions or need further clarification, feel free to ask!
