@@ -109,3 +109,48 @@ This Java program implements the CRC (Cyclic Redundancy Check) generation and ve
 10. It prints the result - whether there's an error or not.
 
 This program demonstrates how CRC codes can be generated and verified to detect errors in data transmission. If you have any questions or need further clarification, feel free to ask!
+
+
+The `divide` function in the CRC generation Java program is responsible for performing the polynomial division operation required to generate the CRC code. Let's break down the function in detail:
+
+```java
+static int[] divide(int div[], int divisor[], int rem[]) {
+    int cur = 0;
+    while (true) {
+        for (int i = 0; i < divisor.length; i++)
+            rem[cur + i] = (rem[cur + i] ^ divisor[i]);
+
+        while (rem[cur] == 0 && cur != rem.length - 1)
+            cur++;
+
+        if ((rem.length - cur) < divisor.length)
+            break;
+    }
+    return rem;
+}
+```
+
+- **Parameters**:
+  - `div[]`: The dividend, which is the data bits appended with zeros to match the length of the divisor.
+  - `divisor[]`: The divisor, which is the polynomial representing the CRC generator.
+  - `rem[]`: The remainder, initially set to the dividend.
+
+- **Return Type**: The function returns an array representing the remainder after polynomial division.
+
+- **Functionality**:
+  1. **Initialization**: The function starts by initializing a variable `cur` to 0, which represents the current position in the dividend.
+  2. **Division Loop**: The function enters a `while` loop that continues indefinitely (`true`) until it's explicitly terminated by a `break` statement.
+     - Inside the loop, it iterates over each coefficient of the divisor polynomial.
+       - For each coefficient, it performs the XOR operation between the corresponding coefficients of the remainder (`rem`) and the divisor polynomial.
+       - This simulates the polynomial division operation, where the remainder is updated by subtracting the divisor polynomial from it.
+     - After updating the remainder, it checks for leading zeros in the remainder.
+       - If there are leading zeros, it increments the `cur` variable until it reaches the first non-zero coefficient or the end of the remainder.
+       - This step ensures that the remainder is shifted to the left to remove any leading zeros.
+     - It checks if the remaining length of the remainder (from the current position `cur` to the end) is less than the length of the divisor polynomial.
+       - If the remaining length is less than the length of the divisor, it breaks out of the loop since further division is not possible.
+  3. **Return**: Finally, the function returns the updated remainder array after completing the division operation.
+
+- **Usage**:
+  - The `divide` function is called within the main program to perform polynomial division during both CRC generation and CRC verification phases.
+
+Overall, the `divide` function implements the core logic of polynomial division required for CRC generation and verification, efficiently updating the remainder and handling leading zeros to ensure accurate division results.
