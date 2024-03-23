@@ -8,11 +8,11 @@ from sklearn.metrics import accuracy_score
 data = pd.read_csv('tennis.csv')
 
 # Obtain Train data and Train output
-X = data.drop(columns=['play'])  # Exclude 'day' column
-y = data['play']
+X = data.drop(columns=['play','day'])  # Features
+y = data['play']                        # Target variable
 
 # Convert categorical data into numerical data
-label_encoders = {}
+label_encoders = {}  # Dictionary to hold label encoders for each column
 for column in X.columns:
     label_encoders[column] = LabelEncoder()
     X[column] = label_encoders[column].fit_transform(X[column])
@@ -29,6 +29,6 @@ classifier = GaussianNB()
 classifier.fit(X_train, y_train)
 
 # Evaluate the classifier
-print("Now the Train data is :\n", X.head())
-print("\nNow the Train output is\n", y)
-print("Accuracy is:", accuracy_score(classifier.predict(X_test), y_test))
+print("Now the Train data is :\n", X.head())  # Displaying first few rows of the transformed features
+print("\nNow the Train output is\n", y)        # Displaying the transformed target variable
+print("Accuracy is:", accuracy_score(classifier.predict(X_test), y_test))  # Evaluating accuracy

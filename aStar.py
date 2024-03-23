@@ -1,89 +1,75 @@
 def aStarAlgo(start_node, stop_node):
-    open_set = set([start_node])
-    closed_set = set()
-    g = {} # store distance from starting node
-    parents = {} # parents contains an adjacency map of all nodes
+    open_set = set([start_node])  # Initialize open set with start node
+    closed_set = set()  # Initialize closed set
+    g = {}  # Cost from start node to current node
+    parents = {}  # Parent nodes for each node
 
-    # distance of starting node from itself is zero
-    g[start_node] = 0
-    # start_node is root node i.e it has no parent nodes
-    # so start_node is set to its own parent node
-    parents[start_node] = start_node
+    g[start_node] = 0  # Cost from start node to itself is 0
+    parents[start_node] = start_node  # Parent of start node is itself
 
+    # Main A* algorithm loop
     while len(open_set) > 0:
-        n = None
-
-        # node with lowest f() is found
+        n = None  # Current node
+        # Find the node with the lowest f(n) = g(n) + h(n)
         for v in open_set:
             if n == None or g[v] + heuristic(v) < g[n] + heuristic(n):
                 n = v
 
+        # If goal node is reached or node has no neighbors
         if n == stop_node or Graph_nodes[n] == None:
             pass
         else:
+            # Explore neighbors of current node
             for (m, weight) in get_neighbors(n):
-                # nodes 'm' not in first and last set are added to first
-                # n is set its parent
                 if m not in open_set and m not in closed_set:
                     open_set.add(m)
                     parents[m] = n
                     g[m] = g[n] + weight
-                # for each node m, compare its distance from start i.e g(m) to the
-                # from start through n node
                 else:
                     if g[m] > g[n] + weight:
-                        # update g(m)
                         g[m] = g[n] + weight
-                        # change parent of m to n
                         parents[m] = n
-
-                        # if m in closed set, remove and add to open
                         if m in closed_set:
                             closed_set.remove(m)
                             open_set.add(m)
 
+        # If no path exists
         if n == None:
             print('Path does not exist!')
             return None
 
-        # if the current node is the stop_node
-        # then we begin reconstructing the path from it to the start_node
+        # If goal node is found, reconstruct and return the path
         if n == stop_node:
             path = []
-
             while parents[n] != n:
                 path.append(n)
                 n = parents[n]
-
             path.append(start_node)
-
             path.reverse()
-
             print('Path found: {}'.format(path))
             return path
 
-        # remove n from the open_list, and add it to closed_list
-        # because all of his neighbors were inspected
         open_set.remove(n)
         closed_set.add(n)
 
     print('Path does not exist!')
     return None
 
-# define function to return neighbor and its distance from the passed node
+# Function to get neighbors of a node
 def get_neighbors(v):
     if v in Graph_nodes:
         return Graph_nodes[v]
     else:
         return None
 
-# for simplicity, we'll consider heuristic distances given
-# and this function returns heuristic distance for all nodes
+# Heuristic function (estimated cost from current node to goal node)
 def heuristic(n):
     return H_dist[n]
 
+# Function to get input from user
 def get_input_from_user():
-    num_edges = int(input("Enter the number of edges: "))
+    num_edges = int(input("Enter the number of edges: "))  # Input number of edges
+    # Input edges and distances between nodes
     for _ in range(num_edges):
         city1, city2, distance = input("Enter city1 city2 distance: ").split()
         distance = int(distance)
@@ -94,16 +80,17 @@ def get_input_from_user():
         Graph_nodes[city1].append((city2, distance))
         Graph_nodes[city2].append((city1, distance))
 
+    # Input heuristic values for each node
     for node in Graph_nodes:
         heuristic_value = int(input(f"Enter heuristic value for node {node}: "))
         H_dist[node] = heuristic_value
 
-# Describe your graph here
-Graph_nodes = {}
-H_dist = {}
+Graph_nodes = {}  # Dictionary to store graph nodes and their neighbors
+H_dist = {}  # Dictionary to store heuristic values for nodes
 
+# Main function
 if __name__ == "__main__":
-    get_input_from_user()
-    start_node = input("Enter the start node: ")
-    stop_node = input("Enter the destination node: ")
-    aStarAlgo(start_node, stop_node)
+    get_input_from_user()  # Get input from user
+    start_node = input("Enter the start node: ")  # Input start node
+    stop_node = input("Enter the destination node: ")  # Input destination node
+    aStarAlgo(start_node, stop_node)  # Run A* algorithm
